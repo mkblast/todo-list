@@ -1,3 +1,5 @@
+import "./style.css";
+
 import { displayTodo } from "./layout";
 
 const button = document.querySelector(".new");

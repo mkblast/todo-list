@@ -1,10 +1,8 @@
 class todo {
-  constructor(title, description, due) {
+  constructor(title, description) {
     this.title = title;
     this.description = description;
-    this.due = due;
   }
 }
-
 
 export { todo }

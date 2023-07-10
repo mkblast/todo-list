@@ -3,10 +3,8 @@ import { todo } from "./todo";
 function newTodo() {
   const title = prompt("New todo");
   const description = prompt("Description");
-  const due = prompt("Due");
 
-  return new todo(title, description, due);
-
+  return new todo(title, description);
 }
 
 function displayTodo() {
@@ -17,17 +15,40 @@ function displayTodo() {
 
   const todoTitle = document.createElement("p");
   const todoDescription = document.createElement("p");
-  const todoDue = document.createElement("p");
+  const todoDue = document.createElement("input");
+
+  const deleteButton = document.createElement("button");
+  const doneButton = document.createElement("button");
 
   todoTitle.textContent = todo.title;
+
   todoDescription.textContent = todo.description;
-  todoDue.textContent = todo.due;
+
+  todoDue.setAttribute("type", "date");
+
+  doneButton.addEventListener("click", () => {
+    deleteTodo(newTodoItem)
+  });
+  doneButton.textContent = "Done";
+
+  deleteButton.addEventListener("click", () => {
+    deleteTodo(newTodoItem)
+  });
+  deleteButton.textContent = "Remove";
 
   newTodoItem.appendChild(todoTitle);
   newTodoItem.appendChild(todoDescription);
   newTodoItem.appendChild(todoDue);
+  newTodoItem.appendChild(doneButton);
+  newTodoItem.appendChild(deleteButton);
+
+  newTodoItem.classList.add("todo");
 
   listView.appendChild(newTodoItem);
+}
+
+function deleteTodo(parent) {
+  parent.remove();
 }
 
 export { displayTodo }
