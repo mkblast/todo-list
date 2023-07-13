@@ -1,13 +1,13 @@
-import "./style.css"
+import "./style.css";
 
 window.onload = loadFromStorage;
 
 function loadFromStorage() {
-  const htmlParser = new DOMParser();
-  const todoView = document.querySelector(".todo-view");
   const storage = localStorage.getItem("todoes");
 
   if (storage != null) {
+    const htmlParser = new DOMParser();
+    const todoView = document.querySelector(".todo-view");
     const html = htmlParser.parseFromString(storage, "text/html");
 
     todoView.innerHTML = html.body.innerHTML;
@@ -56,7 +56,7 @@ function addNewTodo() {
 }
 
 function createProject() {
-  const projectButton = document.querySelector(".project-view")
+  const projectButton = document.querySelector(".project-view");
   const projectName = prompt("Gimme the name");
   const button = document.createElement("button");
   button.textContent = projectName;
