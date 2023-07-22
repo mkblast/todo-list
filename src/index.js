@@ -1,13 +1,38 @@
 import "./style.css";
 
-window.onload = loadFromStorage;
+let currentProject = "Default";
 
-function loadFromStorage() {
-  const storage = localStorage.getItem("todoes");
+window.onload = loadProjectsFromStroga;
+
+function loadProjectsFromStroga() {
+  const storage = localStorage.getItem("projects");
 
   if (storage != null) {
     const htmlParser = new DOMParser();
-    const todoView = document.querySelector(".todo-view");
+    const projectView = document.querySelector(".project-view");
+    const html = htmlParser.parseFromString(storage, "text/html");
+
+    projectView.innerHTML = html.body.innerHTML;
+
+  }
+
+  const project = document.querySelectorAll(".project");
+
+  project.forEach((e) => {
+    switchProject(e);
+    console.log(e);
+  })
+
+  loadTodoesFromStorage();
+
+}
+
+function loadTodoesFromStorage() {
+  const storage = localStorage.getItem(currentProject);
+  const todoView = document.querySelector(".todo-view");
+
+  if (storage != null) {
+    const htmlParser = new DOMParser();
     const html = htmlParser.parseFromString(storage, "text/html");
 
     todoView.innerHTML = html.body.innerHTML;
@@ -18,8 +43,11 @@ function loadFromStorage() {
         deleteButtonEvent(e.parentNode);
       })
     })
+  } else {
+    todoView.innerHTML = ""
   }
 }
+
 
 function deleteButton(parent) {
   const deleteButton = document.createElement("button");
@@ -36,7 +64,7 @@ function deleteButton(parent) {
 function deleteButtonEvent(parent) {
   const todoView = document.querySelector(".todo-view");
   parent.remove();
-  localStorage.setItem("todoes", todoView.innerHTML);
+  localStorage.setItem(currentProject, todoView.innerHTML);
 }
 
 function addNewTodo() {
@@ -52,19 +80,34 @@ function addNewTodo() {
 
   todoView.appendChild(newTodo);
   deleteButton(newTodo);
-  localStorage.setItem("todoes", todoView.innerHTML);
+  localStorage.setItem(currentProject, todoView.innerHTML);
 }
 
 function createProject() {
-  const projectButton = document.querySelector(".project-view");
+  const projectView = document.querySelector(".project-view");
   const projectName = prompt("Gimme the name");
   const button = document.createElement("button");
+
   button.textContent = projectName;
-  projectButton.appendChild(button);
+  button.setAttribute("data-name", projectName);
+  button.classList.add("project");
+
+  switchProject(button);
+
+  projectView.appendChild(button);
+
+  localStorage.setItem("projects", projectView.innerHTML);
+}
+
+function switchProject(project) {
+  project.addEventListener("click", () => {
+    currentProject = project.getAttribute("data-name");
+    loadTodoesFromStorage()
+  })
 }
 
 const newTodoButton = document.querySelector(".new");
 newTodoButton.addEventListener("click", addNewTodo);
 
-const newProjectButton = document.querySelector(".project-view");
+const newProjectButton = document.querySelector(".new-project");
 newProjectButton.addEventListener("click", createProject);
