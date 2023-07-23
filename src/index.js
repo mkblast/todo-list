@@ -20,11 +20,9 @@ function loadProjectsFromStroga() {
 
   project.forEach((e) => {
     switchProject(e);
-    console.log(e);
   })
 
   loadTodoesFromStorage();
-
 }
 
 function loadTodoesFromStorage() {
@@ -47,7 +45,6 @@ function loadTodoesFromStorage() {
     todoView.innerHTML = ""
   }
 }
-
 
 function deleteButton(parent) {
   const deleteButton = document.createElement("button");
@@ -78,25 +75,35 @@ function addNewTodo() {
   <button class="done">Done</button>
   `;
 
+  newTodo.classList.add("todo");
+
   todoView.appendChild(newTodo);
   deleteButton(newTodo);
+  console.log(currentProject);
   localStorage.setItem(currentProject, todoView.innerHTML);
 }
 
 function createProject() {
-  const projectView = document.querySelector(".project-view");
-  const projectName = prompt("Gimme the name");
-  const button = document.createElement("button");
+  let projectName;
+  do {
+    projectName = prompt("Gimme the name:")
+  } while (projectName == "");
 
-  button.textContent = projectName;
-  button.setAttribute("data-name", projectName);
-  button.classList.add("project");
+  console.log(projectName != null)
+  if (projectName != null) {
+    const projectView = document.querySelector(".project-view");
+    const project = document.createElement("button");
+    project.textContent = projectName;
+    project.setAttribute("data-name", projectName);
+    project.classList.add("project");
 
-  switchProject(button);
+    switchProject(project);
+    console.log(project.getAttribute("data-name"))
 
-  projectView.appendChild(button);
+    projectView.appendChild(project);
 
-  localStorage.setItem("projects", projectView.innerHTML);
+    localStorage.setItem("projects", projectView.innerHTML);
+  }
 }
 
 function switchProject(project) {
